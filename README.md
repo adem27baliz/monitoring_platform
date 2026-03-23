@@ -37,27 +37,27 @@ The system is built using a distributed architecture:
 ### Backend
 
 * NestJS (Microservices)
-* Redis / Kafka
-* PostgreSQL / TimescaleDB
-* Elasticsearch
+* Kafka
+* TimescaleDB
+
 
 ### Frontend
 
 * React
 * WebSockets
-* Chart.js / Recharts
+* Chart.js
 
 ### AI
 
 * Python
-* PyTorch / TensorFlow
-* Autoencoder / LSTM
+* SCKITLEARN
+* Autoencoder
+* ISOLATION FOREST
 
 ### DevOps
 
 * Docker
-* Kubernetes
-* Prometheus + Grafana
+* Prometheus
 
 ---
 
@@ -74,49 +74,17 @@ The system is built using a distributed architecture:
 
 ## 🧪 AI Anomaly Detection
 
-The system uses an **unsupervised learning approach**:
+
 
 * Train on normal system behavior
 * Detect anomalies using reconstruction error
 
-```python
-loss = np.mean((input - reconstructed)**2)
-if loss > threshold:
-    anomaly = True
-```
 
 ---
 
-## 🚨 Alerting System
-
-* Threshold-based alerts
-* AI-based anomaly alerts
-* Notification channels:
-
-  * Email
-  * Web notifications
-  * (Optional) Slack / Discord
 
 ---
 
-## 📦 Project Structure
-
-```
-/monitoring-platform
- ├── frontend/
- ├── api-gateway/
- ├── services/
- │    ├── ingestion/
- │    ├── metrics/
- │    ├── logs/
- │    ├── alerts/
- ├── ai-service/
- ├── docker-compose.yml
- ├── k8s/
- └── README.md
-```
-
----
 
 ## ⚙️ Setup (Basic)
 
@@ -124,7 +92,8 @@ if loss > threshold:
 # Clone repo
 git clone https://github.com/your-username/monitoring-platform
 
-# Run services
+# Run each service
+the collector then the ai then the backend then the front end
 docker-compose up
 ```
 
