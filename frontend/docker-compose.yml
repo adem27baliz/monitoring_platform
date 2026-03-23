@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build:
+      context: .
+    container_name: frontend
+    ports:
+      - '5173:5173'
+    environment:
+      VITE_API_URL: http://localhost:3000
+      VITE_WS_URL: http://localhost:3000
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+
+networks:
+  monitoring-network:
+    external: true
+    name: collector_agent_default

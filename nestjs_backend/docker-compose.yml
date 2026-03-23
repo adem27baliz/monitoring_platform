@@ -1,0 +1,51 @@
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: timescaledb
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: monitoring
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+    networks:
+      - monitoring-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  nestjs-backend:
+    build:
+      context: .
+    container_name: nestjs-backend
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      DB_HOST: timescaledb
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: monitoring
+      KAFKA_BROKERS: kafka:29092
+      KAFKA_GROUP_ID: nestjs-backend
+      KAFKA_TOPIC_METRICS: metrics
+      KAFKA_TOPIC_ANOMALIES: anomalies
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+
+volumes:
+  timescale_data:
+
+networks:
+  monitoring-network:
+    external: true
+    name: collector_agent_default

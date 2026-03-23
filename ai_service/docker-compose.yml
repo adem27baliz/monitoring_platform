@@ -1,0 +1,30 @@
+services:
+  ai-service:
+    build:
+      context: .
+    container_name: ai-service
+    environment:
+      PYTHONUNBUFFERED: 1
+      KAFKA_BROKERS: kafka:29092
+      KAFKA_TOPIC_METRICS: metrics
+      KAFKA_TOPIC_ANOMALIES: anomalies
+      KAFKA_GROUP_ID: ai-anomaly-detector
+      MIN_SAMPLES_TO_TRAIN: 100
+      RETRAIN_INTERVAL_SECONDS: 1800
+      ROLLING_WINDOW_SIZE: 5000
+      AUTOENCODER_THRESHOLD: 0.05
+      ISOLATION_FOREST_CONTAMINATION: 0.05
+      MODEL_DIR: models/
+    volumes:
+      - ai_models:/app/models
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+
+volumes:
+  ai_models:
+
+networks:
+  monitoring-network:
+    external: true
+    name: collector_agent_default
